@@ -366,7 +366,7 @@ public class quanlyUser extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(77, 77, 77)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -426,7 +426,15 @@ public class quanlyUser extends javax.swing.JPanel {
                 return;
             }
 
-            User a = new User(makh, tendn, hoten, email, sdt, diachi, mkhau, diem);
+            User a = new User();
+            a.setMakhachhang(makh);
+            a.setTendangnhap(tendn);
+            a.setHoten(hoten);
+            a.setEmail(email);
+            a.setSdt(sdt);
+            a.setDiachi(diachi);
+            a.setMatkhau(mkhau);
+            a.setDiemtichluy(diem);
             dao.insertUser(a);
             JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công");
             loadTable();
@@ -453,7 +461,15 @@ public class quanlyUser extends javax.swing.JPanel {
             String mkhau = this.txtMatkhau.getText().trim();
             int diem = Integer.parseInt(this.txtDiem.getText().trim());
 
-            User a = new User(makh, tendn, hoten, email, sdt, diachi, mkhau, diem);
+            User a = new User();
+            a.setMakhachhang(makh);
+            a.setTendangnhap(tendn);
+            a.setHoten(hoten);
+            a.setEmail(email);
+            a.setSdt(sdt);
+            a.setDiachi(diachi);
+            a.setMatkhau(mkhau);
+            a.setDiemtichluy(diem);
             dao.updateUser(a);
             JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công");
             loadTable();

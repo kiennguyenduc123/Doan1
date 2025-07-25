@@ -13,26 +13,41 @@ import java.util.Date;
  * @author Kiennguyen
  */
 public class Chitietlichdat {
-
+    
+    private int id;
+    private int idLichThue;   
+    private int idDichVu;   
     private String maDV;
     private String tenDV;
     private int soLuong;
     private double donGia;
     private Date ngay;
     private String ghiChu;
-
+    private int idChitiethdon;
     public Chitietlichdat() {
     }
 
-    public Chitietlichdat(String maDV, String tenDV, int soLuong, double donGia, Date ngay, String ghiChu) {
+    public Chitietlichdat(String maDV, String tenDV, int soLuong, double donGia, Date ngay, String ghiChu, int id, int idChitiethdon) {
         this.maDV = maDV;
         this.tenDV = tenDV;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.ngay = ngay;
         this.ghiChu = ghiChu;
+        this.id = id;
+        this.idChitiethdon = idChitiethdon;
     }
 
+    public int getIdChitiethdon() {
+        return idChitiethdon;
+    }
+
+    public void setIdChitiethdon(int idChitiethdon) {
+        this.idChitiethdon = idChitiethdon;
+    }
+
+    
+    
     public String getMaDV() {
         return maDV;
     }
@@ -85,6 +100,36 @@ public class Chitietlichdat {
     public double getTinhTong() {
         return soLuong * donGia;
     }
+
+    public int getIdLichThue() {
+        return idLichThue;
+    }
+
+    public void setIdLichThue(int idLichThue) {
+        this.idLichThue = idLichThue;
+    }
+
+    public int getIdDichVu() {
+        return idDichVu;
+    }
+
+    public void setIdDichVu(int idDichVu) {
+        this.idDichVu = idDichVu;
+    }
+    
+    public double getTongTien(){
+        return soLuong * donGia;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
 
+    
+    
 }

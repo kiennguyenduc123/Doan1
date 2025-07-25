@@ -9,7 +9,7 @@ package DTO;
  * @author Kiennguyen
  */
 public class Dichvu {
-     private int id;
+    private int id;
     private String tendichvu, loaidichvu;
     private double giathue;
     private String mota;
@@ -93,5 +93,10 @@ public class Dichvu {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+    
+     @Override
+    public String toString() {
+        return this.getTendichvu();
     }
 }

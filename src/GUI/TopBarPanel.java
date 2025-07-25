@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DTO.Session;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -30,16 +31,21 @@ public class TopBarPanel extends javax.swing.JPanel {
         rightPanel.setOpaque(false);
 
         // Thêm các icon
-        rightPanel.add(new JLabel(loadIcon("Icon/search_26px.png", 20, 20)));
-        rightPanel.add(new JLabel(loadIcon("Icon/group_message_26px.png", 20, 20)));
-        rightPanel.add(new JLabel(loadIcon("Icon/bell_26px.png", 20, 20)));
+//        rightPanel.add(new JLabel(loadIcon("Icon/search_26px.png", 20, 20)));
+//        rightPanel.add(new JLabel(loadIcon("Icon/group_message_26px.png", 20, 20)));
+//        rightPanel.add(new JLabel(loadIcon("Icon/bell_26px.png", 20, 20)));
 
         // ===== Avatar + text =====
-        JLabel userLabel = new JLabel(" Hello, Admin");
-        userLabel.setIcon(loadIcon("Icon/male_user_50px.png", 26, 26));
-        userLabel.setForeground(Color.WHITE);
-        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        rightPanel.add(userLabel);
+         String roleLabel = "Admin";
+    if (Session.vaiTro != null && Session.vaiTro.equalsIgnoreCase("employee")) {
+        roleLabel = "Nhân Viên";
+    }
+
+    JLabel userLabel = new JLabel(" Hello, " + roleLabel);
+    userLabel.setIcon(loadIcon("Icon/male_user_50px.png", 26, 26));
+    userLabel.setForeground(Color.WHITE);
+    userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    rightPanel.add(userLabel);
 
         // ===== Thêm thành phần vào TopBar =====
         add(logo, BorderLayout.WEST);

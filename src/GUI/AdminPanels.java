@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DTO.Session;
 import Utils.dbConnect;
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +16,18 @@ public class AdminPanels extends javax.swing.JFrame {
 
     private CardLayout cardLayout;
     private JPanel contentPanel;
+
+    private int currentUserId;
+    private String currentUsername;
+
     
-    public AdminPanels() throws ClassNotFoundException, SQLException {
+    JButton btnTrangChu, btnQuanLyDichVu, btnLichDat, btnKhuyenMai;
+    JButton btnQuanLyUser, btnQuanLyNhanVien, btnNhapKho, btnThietLap;
+    
+    public AdminPanels(int userId, String username) throws ClassNotFoundException, SQLException {
         initComponents();
+        this.currentUserId = userId;
+        this.currentUsername = username;
 
         setTitle("Unique Developer - Admin Dashboard");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,14 +47,23 @@ public class AdminPanels extends javax.swing.JFrame {
 
         Connection con = dbConnect.dbConnection();
         // Add các panel con
-        contentPanel.add(new TrangChuPanel(), "Trang Chủ");
-        contentPanel.add(new GoiCuoiHoiPanel(con), "Quản Lý Dịch Vụ");
-        contentPanel.add(new quanlyUser(), "Quản Lý Người Dùng");
-        contentPanel.add(new lichdatPanel(), "Lịch đặt");
-        contentPanel.add(new JPanel(), "Khuyễn Mãi" );
-        contentPanel.add(new JPanel(), "Thống kê & báo cáo");
-        contentPanel.add(new JPanel(), "Cài đặt hệ thống");
+        // Panel dùng chung cho cả admin và nhân viên
+        contentPanel.add(new GoiCuoiHoiPanel(con), "Quản lý dịch vụ");
+        contentPanel.add(new lichdatPanel(), "Lịch thuê");
+        contentPanel.add(new KhuyenMaiMainPanel(currentUserId, currentUsername), "Khuyễn mãi");
+
+// Phân quyền riêng cho admin
+        if (Session.vaiTro.equalsIgnoreCase("admin")) {
+            contentPanel.add(new quanlyUser(), "Quản lý người dùng");
+            contentPanel.add(new quanlyNhanvien(), "Quản lý nhân viên");
+            contentPanel.add(new quanlyKhoPanel(), "Nhập kho");
+            contentPanel.add(new ThietLapPanel(), "Thiết lập");
+            contentPanel.add(new TrangChuPanel(), "Thống kê");
+        }
+
+// Đăng xuất luôn có
         contentPanel.add(new JPanel(), "Đăng xuất");
+
         centerPanel.add(sideMenu, BorderLayout.WEST);
         centerPanel.add(contentPanel, BorderLayout.CENTER);
 
@@ -78,46 +97,6 @@ public class AdminPanels extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminPanels.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminPanels.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminPanels.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminPanels.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new AdminPanels().setVisible(true);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(AdminPanels.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(AdminPanels.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

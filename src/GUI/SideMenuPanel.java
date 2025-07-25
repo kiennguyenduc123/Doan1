@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DTO.Session;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -23,21 +24,38 @@ public class SideMenuPanel extends javax.swing.JPanel {
 
         add(Box.createVerticalStrut(15));
 
-        addMenuItem("Icon/icons8-home-48.png", "Trang Chủ", mainFrame);
-//        addDropdownMenu("Icon/icons8-ring-48.png", "Quản lý dịch vụ", new String[][]{
-//                {"Icon/icons8-ring-48.png", "Gói cưới hỏi"},
-//                {"Icon/icons8-car-48.png", "Thuê xe hoa"},
-//                {"Icon/icons8-camera-intelligence-48.png", "Chụp ảnh "},
-//                {"Icon/icons8-wedding-dress-50.png", "Thuê váy cưới"}
-//        },mainFrame );
-        addMenuItem("Icon/icons8-ring-48.png", "Quản Lý Dịch Vụ", mainFrame);
+//        addMenuItem("Icon/icons8-home-48.png", "Trang Chủ", mainFrame);
+//        addMenuItem("Icon/icons8-ring-48.png", "Quản Lý Dịch Vụ", mainFrame);
+//
+//        addMenuItem("Icon/icons8-user-50.png", "Quản Lý Người Dùng", mainFrame);
+//        addMenuItem("Icon/icons8-employee-30.png", "Quản Lý Nhân Viên", mainFrame);
+//        addMenuItem("Icon/shopping_cart_24px.png", "Khuyễn Mãi", mainFrame);
+//        addMenuItem("Icon/icons8-date-48.png", "Lịch đặt", mainFrame);
+//        addMenuItem("Icon/icons8-warehouse-50.png", "Nhập Kho", mainFrame);
+//        addMenuItem("Icon/icons8-money-50.png", "Thiết Lập", mainFrame);
+////        addMenuItem("Icon/icons8-report-48.png", "Thống kê & báo cáo", mainFrame);
+//        addMenuItem("Icon/icons8-logout-50.png", "Logout", mainFrame);
 
-        addMenuItem("Icon/icons8-user-50.png", "Quản Lý Người Dùng", mainFrame);
-        addMenuItem("Icon/shopping_cart_24px.png", "Khuyễn Mãi", mainFrame);
-        addMenuItem("Icon/icons8-date-48.png", "Lịch đặt", mainFrame);
-        addMenuItem("Icon/icons8-report-48.png", "Thống kê & báo cáo", mainFrame);
-        addMenuItem("Icon/icons8-setting-48.png", "Cài đặt hệ thống", mainFrame);
-        addMenuItem("Icon/icons8-logout-50.png", "Logout", mainFrame);
+//         addMenuItem("Icon/icons8-home-48.png", "Trang chủ", mainFrame);
+        addMenuItem("Icon/icons8-ring-48.png", "Quản lý dịch vụ", mainFrame);
+        addMenuItem("Icon/icons8-date-48.png", "Lịch thuê", mainFrame);
+        addMenuItem("Icon/shopping_cart_24px.png", "Khuyễn mãi", mainFrame);
+
+        // Menu riêng cho admin
+        if (Session.vaiTro.equalsIgnoreCase("admin")) {
+            addMenuItem("Icon/icons8-user-50 (1).png", "Quản lý người dùng", mainFrame);
+            addMenuItem("Icon/icons8-employee-48.png", "Quản lý nhân viên", mainFrame);
+            addMenuItem("Icon/icons8-warehouse-50.png", "Nhập kho", mainFrame);
+            addMenuItem("Icon/icons8-money-48.png", "Thiết lập", mainFrame);
+            addMenuItem("Icon/icons8-home-48.png", "Thống kê", mainFrame);
+
+        }
+
+        // Đăng xuất luôn có
+        addMenuItem("Icon/icons8-logout-48.png", "Logout", mainFrame);
+
+        add(Box.createVerticalGlue());
+
 
         add(Box.createVerticalGlue());
     }
@@ -99,71 +117,6 @@ public class SideMenuPanel extends javax.swing.JPanel {
         add(button);
         add(Box.createVerticalStrut(12));
     }
-    
-//    private void addDropdownMenu(String iconPath, String title, String[][] subMenus, AdminPanels frame) {
-//        ImageIcon icon = loadIcon(iconPath, 22, 22);
-//        JButton mainButton = createStyledButton(title, icon, 20);
-//
-//        JPanel subMenuPanel = new JPanel();
-//        subMenuPanel.setLayout(new BoxLayout(subMenuPanel, BoxLayout.Y_AXIS));
-//        subMenuPanel.setBackground(new Color(55, 55, 55));
-//        subMenuPanel.setVisible(false);
-//
-//        // Toggle
-//        mainButton.addActionListener(e -> {
-//            subMenuPanel.setVisible(!subMenuPanel.isVisible());
-//            revalidate();
-//            repaint();
-//        });
-//
-//        add(mainButton);
-//        add(Box.createVerticalStrut(5));
-//        add(subMenuPanel);
-//
-//        for (String[] sub : subMenus) {
-//            String subIconPath = sub[0];
-//            String subTitle = sub[1];
-//            ImageIcon subIcon = loadIcon(subIconPath, 18, 18);
-//            JButton subBtn = createStyledButton(subTitle, subIcon, 45);
-//            subBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-//
-//            subBtn.addActionListener(e -> mainFrame.showPanel(subTitle));
-//            subMenuPanel.add(subBtn);
-//            subMenuPanel.add(Box.createVerticalStrut(5));
-//        }
-//
-//        add(Box.createVerticalStrut(10));
-//    }
-//    private JButton createStyledButton(String title, Icon icon, int leftPadding) {
-//        JButton button = new JButton(title, icon);
-//        button.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        button.setFocusPainted(false);
-//        button.setHorizontalAlignment(SwingConstants.LEFT);
-//        button.setBackground(new Color(45, 45, 45));
-//        button.setForeground(Color.WHITE);
-//        button.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-//        button.setBorderPainted(false);
-//        button.setIconTextGap(15);
-//        button.setMargin(new Insets(10, leftPadding, 10, 10));
-//
-//        Dimension fullSize = new Dimension(menuWidth, 40);
-//        button.setMaximumSize(fullSize);
-//        button.setPreferredSize(fullSize);
-//
-//        button.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseEntered(MouseEvent evt) {
-//                button.setBackground(new Color(70, 70, 70));
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent evt) {
-//                button.setBackground(new Color(45, 45, 45));
-//            }
-//        });
-//
-//        return button;
-//    }
 
     // Hàm hỗ trợ load icon từ resources
     private ImageIcon loadIcon(String path, int width, int height) {

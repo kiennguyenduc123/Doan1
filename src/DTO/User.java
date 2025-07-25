@@ -16,14 +16,14 @@ public class User {
     
     public User(){}
 
-    public User(String makhachhang,String tendangnhap, String matkhau, String hoten, String sdt, String email, String diachi, int diemtichluy) {
+    public User(String makhachhang,String tendangnhap, String hoten, String email, String sdt,String diachi,String matkhau, String vaitro, int diemtichluy) {
         this.makhachhang = makhachhang;
         this.tendangnhap = tendangnhap;
-        this.matkhau = matkhau;
         this.hoten = hoten;
-        this.sdt = sdt;
         this.email = email;
+        this.sdt = sdt;
         this.diachi = diachi;
+        this.matkhau = matkhau;
         this.vaitro = vaitro;
         this.diemtichluy = diemtichluy;
     }

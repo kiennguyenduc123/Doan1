@@ -26,6 +26,18 @@ import java.util.logging.Logger;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 
+
+//import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 /**
  *
  * @author Kiennguyen
@@ -116,14 +128,14 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
         headerPanel.setBackground(new Color(0, 102, 102));
         headerPanel.setPreferredSize(new Dimension(100, 60));
 
-        JLabel lblHeader = new JLabel("Quản Lý Sản Phẩm");
+        JLabel lblHeader = new JLabel("Quản Lý Dịch Vụ");
         lblHeader.setFont(new Font("Arial", Font.BOLD, 22));
         lblHeader.setForeground(Color.WHITE);
         lblHeader.setBorder(new EmptyBorder(10, 20, 10, 0));
 
         JPanel headerRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         headerRight.setOpaque(false);
-        JButton btnTaoMoi = new JButton("Tạo mới SP");
+        JButton btnTaoMoi = new JButton("Tạo mới DV");
         JButton btnXuatExcel = new JButton("Xuất Excel");
 
         btnTaoMoi.addActionListener(e -> {
@@ -133,6 +145,8 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
                 Logger.getLogger(GoiCuoiHoiPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
+        btnXuatExcel.addActionListener(e -> exportToExcel());
 
         headerRight.add(btnTaoMoi);
         headerRight.add(btnXuatExcel);
@@ -367,6 +381,58 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
 
         frame.setVisible(true);
     }
+    
+    private void exportToExcel() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Excel Files", "xlsx"));
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            String filePath = file.getAbsolutePath().endsWith(".xlsx")
+                    ? file.getAbsolutePath()
+                    : file.getAbsolutePath() + ".xlsx";
+
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("DanhSachDichVu");
+
+                // Header
+                Row header = sheet.createRow(0);
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    header.createCell(i).setCellValue(model.getColumnName(i));
+                }
+                // Dữ liệu
+                for (int row = 0; row < model.getRowCount(); row++) {
+                    Row dataRow = sheet.createRow(row + 1);
+                    for (int col = 0; col < model.getColumnCount(); col++) {
+                        Object value = model.getValueAt(row, col);
+                        dataRow.createCell(col).setCellValue(valueToString(value));
+                    }
+                }
+                try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                    workbook.write(fos);
+                }
+                JOptionPane.showMessageDialog(this, "Xuất Excel thành công:\n" + filePath);
+                
+                    System.out.println("---- CLASSPATH ----");
+                    for (String path : System.getProperty("java.class.path").split(";")) {
+                        System.out.println(path);
+                    }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi xuất Excel:\n" + ex.getMessage());
+            }
+        }
+    }
+    private String valueToString(Object value) {
+        if (value instanceof ImageIcon) {
+            return "[Hình ảnh]";
+        }
+        if (value instanceof Number) {
+            return value.toString();
+        }
+        return value != null ? value.toString() : "";
+    }
+
 
     private void updateDichvu() {
         int row = table.getSelectedRow();
@@ -376,14 +442,12 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
                 dv.setMaDichvu(txtMaDichVu.getText());
                 dv.setTendichvu(txtTenDichVu.getText());
                 dv.setLoaidichvu((String) cmbLoaiDichVu.getSelectedItem());
-                // Sửa lỗi NumberFormatException nếu người dùng nhập trống
                 try {
                     dv.setGiathue(Double.parseDouble(txtGiaThue.getText()));
                 } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(this, "Giá thuê không hợp lệ!");
                     return;
                 }
-
                 dv.setMota(txtMoTa.getText());
                 // Xử lý ảnh
                 Icon icon = lblHinhAnh.getIcon();
@@ -394,7 +458,6 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
                         dv.setImagePath(file.getName()); // Chỉ lấy tên file
                     }
                 }
-
                 if (rdoConHang.isSelected()) {
                     dv.setTrangthai("Còn hàng");
                 } else if (rdoHetHang.isSelected()) {
@@ -404,7 +467,6 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
                 } else {
                     dv.setTrangthai("Không xác định");
                 }
-
                 if (dao.update(dv)) {
                     JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
 
@@ -587,8 +649,9 @@ public class GoiCuoiHoiPanel extends javax.swing.JPanel {
         txtMaDichVu.setText("");
         txtTenDichVu.setText("");
         txtGiaThue.setText("");
-        cmbLoaiDichVu.setSelectedIndex(0);
         txtMoTa.setText("");
+        cmbLoaiDichVu.setSelectedIndex(-1); 
+        groupTrangThai.clearSelection();
         lblHinhAnh.setIcon(null);
         table.clearSelection();
     }

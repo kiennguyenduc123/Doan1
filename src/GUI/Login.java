@@ -9,12 +9,15 @@ package GUI;
  * @author Kiennguyen
  */
 import DAO.UserDao;
+import DTO.Session;
+import DTO.User;
 import Utils.PasswordUtils;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.showMessageDialog;
 public class Login extends javax.swing.JFrame {
 
     private UserDao userDao = new UserDao();
@@ -123,6 +126,11 @@ public class Login extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\Kiennguyen\\OneDrive\\Documents\\NetBeansProjects\\Doan1\\src\\Icon\\icons8_Forgot_Password_50px_4.png")); // NOI18N
         jLabel9.setText("Forgot Password ?");
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 650, 220, 60));
 
         jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\Kiennguyen\\OneDrive\\Documents\\NetBeansProjects\\Doan1\\src\\Icon\\icons8_Secure_50px.png")); // NOI18N
@@ -193,12 +201,16 @@ public class Login extends javax.swing.JFrame {
             return;
         }
         
-        boolean isAuth = userDao.login(username, password);
-        if(isAuth) {
+        User isAuth = userDao.login(username, password);
+        if(isAuth != null) {
+            Session.id = isAuth.getId();
+            Session.hoTen = isAuth.getHoten();
+            Session.vaiTro = isAuth.getVaitro();
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
             this.dispose();
             try {
-                new AdminPanels().setVisible(true);
+                new AdminPanels(isAuth.getId(), isAuth.getTendangnhap()).setVisible(true);
+                System.out.println("ID " + isAuth.getId());
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -209,6 +221,7 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    
     private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
         // TODO add your handling code here:
         SignUp signFrame = new SignUp();
@@ -217,6 +230,16 @@ public class Login extends javax.swing.JFrame {
         signFrame.setVisible(true); 
         this.dispose();
     }//GEN-LAST:event_btnSignupActionPerformed
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(
+                this, // hoặc (java.awt.Component) evt.getSource()
+                "Hãy liên hệ với admin để gửi mã",
+                "Thông báo",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }//GEN-LAST:event_jLabel9MouseClicked
 
     /**
      * @param args the command line arguments
